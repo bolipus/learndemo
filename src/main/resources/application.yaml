@@ -1,0 +1,43 @@
+learndemo:
+  number: 99
+  user-name: admin
+  first-name: Janez
+  last-name: Novak
+  working-time: 12h
+  emails:
+  - first@mail.com
+  - second@email.com
+  addresses:
+  - number: 10
+    city: Maribor
+    street: Smetanova 10
+    country: Slovenia
+  - number: 11
+    city: Maribor
+    street: Koroska 5
+    country: Slovenia
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+        - "*"
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
+# spring:
+#   security:
+#     user:
+#       name: demo
+#       password: demo   
+
+# server:
+#     port: 8443
+#     ssl:
+#       key-store: keystore.p12
+#       key-store-password: sslcert123
+#       keyStoreType: PKCS12
+#       keyAlias: sslcert
+ 
+    http2:
+      enabled: true
