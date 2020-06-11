@@ -10,9 +10,11 @@ public interface UserService {
 
   User findById(long id) throws UserNotFoundException;
 
-  User findByUserName(String username) throws UserNotFoundException;
+  User findByUsername(String username) throws UserNotFoundException;
 
   User save(User user);
+
+  User update(User updatedUser) throws UserNotFoundException;
 
   void delete(long id);
 }

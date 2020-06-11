@@ -17,4 +17,5 @@ public interface CommentService {
 
   void delete(Long id);
 
+  Comment update(Comment updatedComment) throws CommentNotFoundException;
 }

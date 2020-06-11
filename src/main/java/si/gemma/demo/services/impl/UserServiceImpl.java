@@ -14,12 +14,10 @@ public class UserServiceImpl implements UserService {
 
   private UserRepository userRepository;
 
-
   @Autowired
   public UserServiceImpl(UserRepository userRepository) {
     this.userRepository = userRepository;
   }
-
 
   @Override
   public List<User> findAll() {
@@ -36,7 +34,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public User findByUserName(String username) throws UserNotFoundException {
+  public User findByUsername(String username) throws UserNotFoundException {
     Optional<User> userOptional = userRepository.findByUsername(username);
     if (!userOptional.isPresent()) {
       throw new UserNotFoundException("User with username " + username + " not found");
@@ -46,6 +44,17 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public User save(User user) {
+    return userRepository.save(user);
+  }
+
+  @Override
+  public User update(User updatedUser) throws UserNotFoundException {
+    User user = findById(updatedUser.getId());
+
+    user.setFirstName(updatedUser.getFirstName());
+    user.setLastName(updatedUser.getLastName());
+    user.setUsername(updatedUser.getUsername());
+
     return userRepository.save(user);
   }
 

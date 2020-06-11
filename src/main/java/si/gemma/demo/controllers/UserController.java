@@ -2,40 +2,64 @@ package si.gemma.demo.controllers;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import si.gemma.demo.entities.Role;
+import org.springframework.web.bind.annotation.RestController;
+
 import si.gemma.demo.entities.User;
-import si.gemma.demo.models.RoleDTO;
+import si.gemma.demo.exceptions.UserNotFoundException;
 import si.gemma.demo.models.UserDTO;
-import si.gemma.demo.services.RoleService;
 import si.gemma.demo.services.UserService;
 
-@Controller
-@RequestMapping(value = "api/v1")
+@RestController
+@RequestMapping(value = "/api/v1")
 public class UserController {
 
   private UserService userService;
-  private RoleService roleService;
   private ModelMapper modelMapper;
 
-  public UserController(UserService userService, RoleService roleService, ModelMapper modelMapper) {
+  public UserController(UserService userService, ModelMapper modelMapper) {
     this.userService = userService;
-    this.roleService = roleService;
     this.modelMapper = modelMapper;
   }
 
   @GetMapping("/users")
-  public ResponseEntity<List<UserDTO>> findAllUser()
-     List<UserDTO> users = userService.findAll().stream()
-        .map(this::convertDTO)
-        .collect(Collectors.toList());
+  public ResponseEntity<List<UserDTO>> findAllUser() {
+    List<UserDTO> users = userService.findAll().stream().map(this::convertDTO).collect(Collectors.toList());
 
-     return ResponseEntity.ok(users);
+    return ResponseEntity.ok(users);
+  }
+
+  @GetMapping("/users/{id}")
+  public ResponseEntity<UserDTO> findUser(@PathVariable(name = "id", required = true) Long id)
+      throws UserNotFoundException {
+    User user = userService.findById(id);
+    return ResponseEntity.ok(convertDTO(user));
+  }
+
+  @PostMapping("/users")
+  public ResponseEntity<UserDTO> createUser(@RequestBody UserDTO userDTO) {
+    User user = userService.save(convertEntity(userDTO));
+    return ResponseEntity.ok(convertDTO(user));
+  }
+
+  @PutMapping("/users/{id}")
+  public ResponseEntity<UserDTO> updateUser(@PathVariable(name = "id", required = true) Long id,
+      @RequestBody UserDTO userDTO) throws UserNotFoundException {
+
+    if (!id.equals(userDTO.getId())) {
+      throw new UserNotFoundException("Id is not identical to body id");
+    }
+
+    User user = userService.update(convertEntity(userDTO));
+    return ResponseEntity.ok(convertDTO(user));
   }
 
   private UserDTO convertDTO(User user) {
@@ -46,11 +70,4 @@ public class UserController {
     return modelMapper.map(userDTO, User.class);
   }
 
-  private RoleDTO convertDTO(Role role) {
-    return modelMapper.map(role, RoleDTO.class);
-  }
-
-  private Role convertEntity(RoleDTO roleDTO) {
-    return modelMapper.map(roleDTO, Role.class);
-  }
 }

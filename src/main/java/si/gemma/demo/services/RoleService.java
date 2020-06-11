@@ -14,5 +14,7 @@ public interface RoleService {
 
   Role save(Role role);
 
+  Role update(Role role) throws RoleNotFoundException;
+
   void delete(Long id);
 }
