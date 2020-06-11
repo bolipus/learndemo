@@ -17,12 +17,16 @@ import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertyResolver;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import lombok.extern.log4j.Log4j2;
 import si.gemma.demo.config.LearnDemoProperties;
 import si.gemma.demo.models.Address;
 
 @SpringBootApplication
 @EnableConfigurationProperties(LearnDemoProperties.class)
+@EnableTransactionManagement
+@EnableJpaAuditing
 @Log4j2
 public class LearnDemoApplication {
 
@@ -49,11 +53,5 @@ public class LearnDemoApplication {
 
 		return args -> log.info("Hello world!");
 	}
-
-
-
-	/*
-	 * @Bean public LearnDemoProperties learnDemoProperties() { return new LearnDemoProperties(); }
-	 */
 
 }
