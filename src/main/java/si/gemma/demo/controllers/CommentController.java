@@ -11,12 +11,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import si.gemma.demo.entities.Comment;
 import si.gemma.demo.exceptions.CommentNotFoundException;
 import si.gemma.demo.models.CommentDTO;
 import si.gemma.demo.services.CommentService;
 
+@RestController
+@RequestMapping(value = "/api/v1")
 public class CommentController {
   private CommentService commentService;
 
@@ -30,7 +33,8 @@ public class CommentController {
 
   @GetMapping("/comments")
   public ResponseEntity<List<CommentDTO>> findAllRoles() {
-    List<CommentDTO> comments = commentService.findAll().stream().map(this::convertDTO).collect(Collectors.toList());
+    List<CommentDTO> comments =
+        commentService.findAll().stream().map(this::convertDTO).collect(Collectors.toList());
     return ResponseEntity.ok(comments);
   }
 

@@ -2,14 +2,18 @@ package si.gemma.demo.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
+import lombok.extern.log4j.Log4j2;
 import si.gemma.demo.entities.Role;
 import si.gemma.demo.exceptions.RoleNotFoundException;
 import si.gemma.demo.repositories.RoleRepository;
 import si.gemma.demo.services.RoleService;
 
 @Service
+@Log4j2
 public class RoleServiceImpl implements RoleService {
 
   private RoleRepository roleRepository;
@@ -43,11 +47,15 @@ public class RoleServiceImpl implements RoleService {
   }
 
   @Override
+  @Transactional
+  @Secured("ROLE_ADMIN")
   public Role save(Role role) {
     return roleRepository.save(role);
   }
 
   @Override
+  @Transactional
+  @Secured("ROLE_ADMIN")
   public Role update(Role updatedRole) throws RoleNotFoundException {
     Role role = findById(updatedRole.getId());
     role.setName(updatedRole.getName());
@@ -55,6 +63,8 @@ public class RoleServiceImpl implements RoleService {
   }
 
   @Override
+  @Transactional
+  @Secured("ROLE_ADMIN")
   public void delete(Long id) {
     roleRepository.deleteById(id);
   }

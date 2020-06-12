@@ -15,10 +15,9 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Data;
 
-@MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Data
-public abstract class Auditable {
+public abstract class AuditableElastic {
 
   public static PrettyTime prettyTime = new PrettyTime();
 
@@ -42,6 +41,7 @@ public abstract class Auditable {
     }
     Date date = Date.from(createdDate.atZone(ZoneId.systemDefault()).toInstant());
     return prettyTime.format(date);
+    // return prettyTime.format(createdDate);
   }
 
   public String getPrettyModifiedDate() {
@@ -50,6 +50,7 @@ public abstract class Auditable {
     }
     Date date = Date.from(modifiedDate.atZone(ZoneId.systemDefault()).toInstant());
     return prettyTime.format(date);
+    // return prettyTime.format(modifiedDate);
   }
 
 }

@@ -2,8 +2,10 @@ package si.gemma.demo.services.impl;
 
 import java.util.List;
 import java.util.Optional;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import lombok.extern.log4j.Log4j2;
 import si.gemma.demo.entities.Comment;
 import si.gemma.demo.entities.User;
 import si.gemma.demo.exceptions.CommentNotFoundException;
@@ -13,6 +15,7 @@ import si.gemma.demo.repositories.UserRepository;
 import si.gemma.demo.services.CommentService;
 
 @Service
+@Log4j2
 public class CommentServiceImpl implements CommentService {
 
   private CommentRepository commentRepository;
@@ -48,11 +51,13 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
+  @Transactional
   public Comment save(Comment comment) {
     return commentRepository.save(comment);
   }
 
   @Override
+  @Transactional
   public Comment update(Comment updatedComment) throws CommentNotFoundException {
     Comment comment = findById(updatedComment.getId());
     comment.setText(updatedComment.getText());
@@ -61,6 +66,7 @@ public class CommentServiceImpl implements CommentService {
   }
 
   @Override
+  @Transactional
   public void delete(Long id) {
     commentRepository.deleteById(id);
   }

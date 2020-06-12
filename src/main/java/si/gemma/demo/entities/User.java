@@ -44,7 +44,7 @@ public class User implements UserDetails {
   private Long id;
 
   @NonNull
-  @Size(min = 8, max = 20)
+  @Size(min = 3, max = 20)
   @Column(nullable = false, unique = true)
   private String username;
 
@@ -66,6 +66,10 @@ public class User implements UserDetails {
   @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true,
       fetch = FetchType.LAZY)
   private transient List<Comment> comments;
+
+  @OneToMany(mappedBy = "user", cascade = {CascadeType.ALL}, orphanRemoval = true,
+      fetch = FetchType.LAZY)
+  private transient List<Article> articles;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -26,7 +26,6 @@ import si.gemma.demo.models.Address;
 @SpringBootApplication
 @EnableConfigurationProperties(LearnDemoProperties.class)
 @EnableTransactionManagement
-@EnableJpaAuditing
 @Log4j2
 public class LearnDemoApplication {
 
